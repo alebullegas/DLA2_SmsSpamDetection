@@ -74,8 +74,6 @@ Dimostrare che un **modello piccolo ma specializzato (Fine-Tuned)** può superar
 | `Finetuning_Spam.ipynb` | 📓 Notebook | Il notebook Colab che esegue l'addestramento QLoRA e l'esportazione GGUF. |
 
 
-
-
 ## 4. 📁 Struttura del Progetto <a name="struttura-progetto"></a>
 
 ```plaintext
@@ -98,7 +96,7 @@ Dimostrare che un **modello piccolo ma specializzato (Fine-Tuned)** può superar
 │   └── risultati_benchmark.csv   # Risultati grezzi per ogni SMS
 │
 └── README.md                     # Documentazione
-
+```
 
 ## 5. 🛠️ Stack Tecnologico <a name="stack-tecnologico"></a>
 ### 🟣 LM Studio
@@ -116,3 +114,7 @@ Per la fase di Fine-Tuning su Google Colab, viene utilizzata la libreria **Unslo
 * **Perché è essenziale:** Il Fine-Tuning tradizionale di Llama 3 richiederebbe GPU potentissime (A100, 40GB VRAM).
 * **Innovazione Tecnica:** Unsloth implementa kernel PyTorch riscritti per l'ottimizzazione e utilizza la tecnica **QLoRA** (Quantized Low-Rank Adaptation).
 * **Risultato:** Questo stack ci ha permesso di addestrare un modello da 3 miliardi di parametri su una GPU Tesla T4 gratuita (16GB VRAM), riducendo i tempi di training di 2x e l'occupazione di memoria del 60%.
+
+
+
+
