@@ -16,10 +16,6 @@
 </p>
 
 <p align="center">
-  <img src="https://static.vecteezy.com/system/resources/previews/005/971/856/original/spam-mail-in-flat-style-icon-vector.jpg" alt="Cybersecurity Banner">
-</p>
-
-<p align="center">
   Progetto di <b>Binary Classification</b> su SMS Spam confrontando diversi modelli.
 </p>
 
@@ -47,6 +43,7 @@
 > - **Email:** alebullegas31@gmail.com
 >
 > - ---
+
 
 ## 2. 📌 Descrizione <a name="descrizione"></a>
 
@@ -76,7 +73,8 @@ Dimostrare che un **modello piccolo ma specializzato (Fine-Tuned)** può superar
 | `test_benchmark.csv` | 📄 Dati | Il dataset "invisibile" usato solo per la valutazione finale. |
 | `Finetuning_Spam.ipynb` | 📓 Notebook | Il notebook Colab che esegue l'addestramento QLoRA e l'esportazione GGUF. |
 
----
+
+
 
 ## 4. 📁 Struttura del Progetto <a name="struttura-progetto"></a>
 
