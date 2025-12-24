@@ -24,16 +24,17 @@
 > ## 📑 Indice
 > 01. [🧑🏻‍🎓 Studente](#studente)  
 > 02. [📌 Descrizione](#descrizione)  
-> 03. [📄 Panoramica File](#panoramica-file)  
-> 04. [📁 Struttura del Progetto](#struttura-progetto)  
-> 05. [🛠️ Stack Tecnologico](#stack-tecnologico)  
-> 06. [🚀 Installazione](#installazione)  
-> 07. [🧪 Run: Processo di Fine-Tuning](#fine-tuning)  
-> 08. [📊 Run: Benchmark e Confronto](#benchmark)  
-> 09. [📈 Metriche e Risultati](#metriche)  
-> 10. [🖥️ Hardware e Limitazioni](#hardware)  
-> 11. [📝 Licenze](#licenze)  
-> 12. [❓ Come Citare](#citare)
+> 03. [🗃️Descrizione Dataset](#dataset)
+> 04. [📄 Panoramica File](#panoramica-file)
+> 06. [📁 Struttura del Progetto](#struttura-progetto)  
+> 07. [🛠️ Stack Tecnologico](#stack-tecnologico)  
+> 08. [🚀 Installazione](#installazione)  
+> 09. [🧪 Run: Processo di Fine-Tuning](#fine-tuning)  
+> 10. [📊 Run: Benchmark e Confronto](#benchmark)  
+> 11. [📈 Metriche e Risultati](#metriche)  
+> 12. [🖥️ Hardware e Limitazioni](#hardware)  
+> 13. [📝 Licenze](#licenze)  
+> 14. [❓ Come Citare](#citare)
 
 ---
 
@@ -62,8 +63,32 @@ Dimostrare che un **modello piccolo ma specializzato (Fine-Tuned)** può superar
 * ✅ **Latenza Minore**
 * ✅ **Accuratezza Superiore**
 
+## 3. 📂 Descrizione Dataset <a name="dataset"></a>
 
-## 3. 📄 Panoramica File <a name="panoramica-file"></a>
+Il progetto utilizza l'**SMS Spam Collection**, un dataset pubblico disponibile presso l'UCI Machine Learning Repository.
+Si tratta di un set di **messaggi SMS** reali, etichettati manualmente come legittimi o indesiderati.
+
+| Etichetta | Percentuale | Descrizione |
+| :--- | :--- | :--- | :--- |
+| **HAM** 🟢 |**86.6%** | Messaggi normali, conversazioni personali, notifiche legittime. |
+| **SPAM** 🔴 | **13.4%** | Phishing, truffe, pubblicità aggressiva, vincite false. |
+
+> **Nota Tecnica:** Durante la fase di preparazione (`split_dataset.py`), abbiamo rinominato le colonne originali (`v1`, `v2`) in `label` e `text` per chiarezza e rimosso eventuali colonne vuote sporche presenti nel CSV originale.
+
+### 📝 Esempi dal Dataset
+
+Ecco come appaiono i dati grezzi che il modello deve imparare a distinguere:
+
+| Tipo | Esempio di Testo (Raw) |
+| :--- | :--- |
+| **SPAM** | *"Free entry in 2 a wkly comp to win FA Cup final tkts 21st May 2005. Text FA to 87121 to receive entry question..."* |
+| **SPAM** | *"URGENT! You have won a 1 week FREE membership in our 100,000 Prize Jackpot! Txt the word: CLAIM to No: 81010..."* |
+| **HAM** | *"Go until jurong point, crazy.. Available only in bugis n great world la e buffet..."* |
+| **HAM** | *"Ok lar... Joking wif u oni..."* |
+
+---
+
+## 4. 📄 Panoramica File <a name="panoramica-file"></a>
 
 | File | Tipo | Descrizione |
 | :--- | :--- | :--- |
@@ -74,7 +99,7 @@ Dimostrare che un **modello piccolo ma specializzato (Fine-Tuned)** può superar
 | `Finetuning_Spam.ipynb` | 📓 Notebook | Il notebook Colab che esegue l'addestramento QLoRA e l'esportazione GGUF. |
 
 
-## 4. 📁 Struttura del Progetto <a name="struttura-progetto"></a>
+## 5. 📁 Struttura del Progetto <a name="struttura-progetto"></a>
 
 ```plaintext
 ├── 📁 data/                      # Contiene i dataset (Raw, Train, Test)
@@ -98,7 +123,7 @@ Dimostrare che un **modello piccolo ma specializzato (Fine-Tuned)** può superar
 └── README.md                     # Documentazione
 ```
 
-## 5. 🛠️ Stack Tecnologico <a name="stack-tecnologico"></a>
+## 6. 🛠️ Stack Tecnologico <a name="stack-tecnologico"></a>
 ### 🟣 LM Studio
 **LM Studio** non viene usato come semplice interfaccia grafica, ma come vero e proprio **Server Locale**.
 * **Ruolo Architetturale:** LM Studio carica i modelli e sfrutta la GPU/CPU del pc per eseguire i calcoli.
