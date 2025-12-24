@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop" alt="Cybersecurity Banner">
+  <img src="https://www.svgrepo.com/show/31556/spam.svg" alt="Cybersecurity Banner">
 </p>
 
 <p align="center">
