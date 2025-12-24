@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <img src="https://www.svgrepo.com/show/31556/spam.svg" alt="Cybersecurity Banner">
+  <img src="https://static.vecteezy.com/system/resources/previews/005/971/856/original/spam-mail-in-flat-style-icon-vector.jpg" alt="Cybersecurity Banner">
 </p>
 
 <p align="center">
