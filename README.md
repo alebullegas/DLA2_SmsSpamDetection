@@ -64,3 +64,39 @@ Utilizzando il dataset pubblico **SMS Spam Collection**, il progetto mette a con
 Dimostrare che un **modello piccolo ma specializzato (Fine-Tuned)** può superare modelli più complessi o "ragionanti" in task verticali, offrendo:
 * ✅ **Latenza Minore**
 * ✅ **Accuratezza Superiore**
+
+
+## 3. 📄 Panoramica File <a name="panoramica-file"></a>
+
+| File | Tipo | Descrizione |
+| :--- | :--- | :--- |
+| `split_dataset.py` | 🐍 Script | Lo script che si occupa di pulire il dataset raw (`spam.csv`), mescolarlo e dividerlo rigorosamente in Training Set (80%) e Test Set (20%) per evitare *Overfitting*. |
+| `model_evaluation.py` | 🐍 Script | Lo script che interroga LM Studio, misura la latenza e calcola le metriche (Accuracy, Precision, Recall) sui modelli. |
+| `train_unsloth.jsonl` | 📄 Dati | Il file JSONL formattato contenente solo gli esempi per l'addestramento da utilizzare su Colab. |
+| `test_benchmark.csv` | 📄 Dati | Il dataset "invisibile" usato solo per la valutazione finale. |
+| `Finetuning_Spam.ipynb` | 📓 Notebook | Il notebook Colab che esegue l'addestramento QLoRA e l'esportazione GGUF. |
+
+---
+
+## 4. 📁 Struttura del Progetto <a name="struttura-progetto"></a>
+
+```plaintext
+├── 📁 data/                      # Contiene i dataset (Raw, Train, Test)
+│   ├── spam.csv                  # Dataset originale
+│   ├── train_unsloth.jsonl       # Dataset formattato per il training
+│   └── test_benchmark.csv        # Dataset riservato per il test
+│
+├── 📁 models/                    # Cartella per i modelli GGUF
+│   └── Llama-3.2-3B-Instruct.Q4_K_M.gguf # Il modello Fine-Tunato
+│
+├── 📁 notebooks/                  # Codice per il fine tuning
+│   └── Finetuning_Spam.ipynb      # Notebook Google Colab
+│
+├── 📁 src/                       # Codice sorgente Python
+│   ├── model_evaluation.py       # Script di validazione
+│   └── split_dataset.py          # Script di preparazione dati
+│
+├── 📁 results/                   # Output dei test
+│   └── risultati_benchmark.csv   # Risultati grezzi per ogni SMS
+│
+└── README.md                     # Documentazione
