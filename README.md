@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <img src="https://images.unsplash.com/photo-1563206767-5b1d9728c798?q=80&w=1000&auto=format&fit=crop" alt="spam-benchmark-banner" width="100%" style="border-radius: 10px;">
+  <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop" alt="Cybersecurity Banner">
 </p>
 
 <p align="center">
@@ -42,5 +42,25 @@
 ---
 
 ## 1. 🧑🏻‍🎓 Studente <a name="studente"></a>
-> **👤 Alessandro Bullegas** > - **60/73/65307** 
+> **Alessandro Bullegas**
+> - **Matricola:** 60/73/65307
 > - **Email:** alebullegas31@gmail.com
+>
+> - ---
+
+## 2. 📌 Descrizione <a name="descrizione"></a>
+
+Questo progetto nasce come studio sperimentale per analizzare i trade-off tra **dimensione del modello**, **capacità di ragionamento** (Reasoning) e **specializzazione del dominio** nel contesto della Spam Detection.
+
+I Large Language Models (LLM) classici sono strumenti molto potenti ma, spesso, peccano di velocità e stretta aderenza alle richieste dei task che vengono affidati, come ad esempio filtrare SMS malevoli.
+
+Utilizzando il dataset pubblico **SMS Spam Collection**, il progetto mette a confronto tre filosofie diverse:
+
+1.  **Zero-Shot Generalist:** `Llama 3.2 3B Instruct`. Un modello leggero e generico, testato sulla sua capacità di riconoscere lo spam senza addestramento specifico.
+2.  **Chain-of-Thought Reasoning:** `DeepSeek R1`. Un modello progettato per "pensare" prima di rispondere. Testiamo se il ragionamento logico aiuta a scovare tentativi di phishing più sottili o se aggiunge solo latenza inutile.
+3.  **Domain Specialist:** `Llama 3.2 3B Fine-Tuned`. La versione custom, addestrata specificamente.
+
+### 🎯 Obiettivo
+Dimostrare che un **modello piccolo ma specializzato (Fine-Tuned)** può superare modelli più complessi o "ragionanti" in task verticali, offrendo:
+* ✅ **Latenza Minore**
+* ✅ **Accuratezza Superiore**
