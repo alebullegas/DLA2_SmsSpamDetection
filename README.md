@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  Progetto universitario di <b>Binary Classification</b> su SMS Spam confrontando modelli <b>Generalisti</b>, <b>Reasoning</b> (DeepSeek) e <b>Fine-Tuned</b> (Llama 3.2).
+  Progetto di <b>Binary Classification</b> su SMS Spam confrontando diversi modelli.
 </p>
 
 ---
