@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/placeholder-spam-detection.png" alt="spam-benchmark-banner" width="600">
+  <img src="https://images.unsplash.com/photo-1563206767-5b1d9728c798?q=80&w=1000&auto=format&fit=crop" alt="spam-benchmark-banner" width="100%" style="border-radius: 10px;">
 </p>
 
 <p align="center">
