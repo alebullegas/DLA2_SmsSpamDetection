@@ -69,17 +69,17 @@ Il progetto utilizza l'**SMS Spam Collection**, un dataset pubblico disponibile 
 Si tratta di un set di **messaggi SMS** reali, etichettati manualmente come legittimi o indesiderati.
 
 | Etichetta | Percentuale | Descrizione |
-| :--- | :--- | :--- | :--- |
-| **HAM** 🟢 |**86.6%** | Messaggi normali, conversazioni personali, notifiche legittime. |
-| **SPAM** 🔴 | **13.4%** | Phishing, truffe, pubblicità aggressiva, vincite false. |
+| :--- | :--- | :--- |
+| **HAM** 🟢 | **76.6%** | Messaggi normali, conversazioni personali, notifiche legittime. |
+| **SPAM** 🔴 | **23.4%** | Phishing, truffe, pubblicità aggressiva, vincite false. |
 
-> **Nota Tecnica:** Durante la fase di preparazione (`split_dataset.py`), abbiamo rinominato le colonne originali (`v1`, `v2`) in `label` e `text` per chiarezza e rimosso eventuali colonne vuote sporche presenti nel CSV originale.
+> **Nota Tecnica:** Durante la fase di preparazione (`split_dataset.py`), sono state rinominate le colonne originali (`v1`, `v2`) in `label` e `text` per chiarezza e rimosso eventuali colonne vuote sporche presenti nel CSV originale.
 
 ### 📝 Esempi dal Dataset
 
 Ecco come appaiono i dati grezzi che il modello deve imparare a distinguere:
 
-| Tipo | Esempio di Testo (Raw) |
+| Tipo | Esempio di Testo|
 | :--- | :--- |
 | **SPAM** | *"Free entry in 2 a wkly comp to win FA Cup final tkts 21st May 2005. Text FA to 87121 to receive entry question..."* |
 | **SPAM** | *"URGENT! You have won a 1 week FREE membership in our 100,000 Prize Jackpot! Txt the word: CLAIM to No: 81010..."* |
