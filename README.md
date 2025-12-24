@@ -23,7 +23,7 @@
 
 > ## 📑 Indice
 > 01. [🧑🏻‍🎓 Studente](#studente)  
-> 02. [📌 Descrizione](#descrizione)  
+> 02. [📌 Descrizione Progetto](#descrizione)  
 > 03. [🗃️Descrizione Dataset](#dataset)
 > 04. [📄 Panoramica File](#panoramica-file)
 > 06. [📁 Struttura del Progetto](#struttura-progetto)  
@@ -46,7 +46,7 @@
 > - ---
 
 
-## 2. 📌 Descrizione <a name="descrizione"></a>
+## 2. 📌 Descrizione Progetto <a name="descrizione"></a>
 
 Questo progetto nasce come studio sperimentale per analizzare i trade-off tra **dimensione del modello**, **capacità di ragionamento** (Reasoning) e **specializzazione del dominio** nel contesto della Spam Detection.
 
