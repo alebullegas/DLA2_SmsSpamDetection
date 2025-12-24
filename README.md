@@ -98,3 +98,21 @@ Dimostrare che un **modello piccolo ma specializzato (Fine-Tuned)** può superar
 │   └── risultati_benchmark.csv   # Risultati grezzi per ogni SMS
 │
 └── README.md                     # Documentazione
+
+
+## 5. 🛠️ Stack Tecnologico <a name="stack-tecnologico"></a>
+### 🟣 LM Studio
+**LM Studio** non viene usato come semplice interfaccia grafica, ma come vero e proprio **Server Locale**.
+* **Ruolo Architetturale:** LM Studio carica i modelli e sfrutta la GPU/CPU del pc per eseguire i calcoli.
+* **Integrazione API:** La funzionalità chiave utile per il progetto è il suo **Local Server** compatibile con le specifiche OpenAI (`http://localhost:1234/v1`). Questo ci permette di disaccoppiare il modello dallo script Python: possiamo sostituire il "motore" (es. passando da un modello ad un altro) in tempo reale senza modificare il codice.
+
+### 🦜🔗 LangChain
+**LangChain** funge come livello di astrazione logica tra il nostro codice Python e il modello linguistico.
+* **Prompt Templating:** Gestisce la costruzione dinamica dei messaggi, inserendo il `System Prompt` (le regole di sicurezza) e lo `User Prompt` (l'SMS da analizzare) nel formato corretto atteso dal modello.
+* **Output Parsing:** Utilizzando `StrOutputParser`, LangChain intercetta la risposta grezza dell'LLM e la pulisce da eventuali meta-tag o spazi bianchi, garantendo che il dato salvato nel CSV sia pulito e pronto per l'analisi.
+
+### 🦥 Unsloth AI (Optimization Library)
+Per la fase di Fine-Tuning su Google Colab, viene utilizzata la libreria **Unsloth**, che rappresenta uno strumento fondamentale per migliorare l'efficienza nell'addestramento degli LLM.
+* **Perché è essenziale:** Il Fine-Tuning tradizionale di Llama 3 richiederebbe GPU potentissime (A100, 40GB VRAM).
+* **Innovazione Tecnica:** Unsloth implementa kernel PyTorch riscritti per l'ottimizzazione e utilizza la tecnica **QLoRA** (Quantized Low-Rank Adaptation).
+* **Risultato:** Questo stack ci ha permesso di addestrare un modello da 3 miliardi di parametri su una GPU Tesla T4 gratuita (16GB VRAM), riducendo i tempi di training di 2x e l'occupazione di memoria del 60%.
