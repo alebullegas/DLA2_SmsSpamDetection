@@ -1,6 +1,10 @@
 # 🛡️ DLA2: SMS SPAM DETECTION 2024/25 - UNICA
 
 <p align="center">
+  <img src="https://img.icons8.com/fluency/100/spam.png" alt="Spam Icon" width="100">
+</p>
+
+<p align="center">
   <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">
     <img src="https://img.shields.io/badge/License-Apache_2.0-4285F4?style=for-the-badge&logo=none&logoColor=white" alt="Apache License 2.0"/>
   </a>
