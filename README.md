@@ -26,15 +26,15 @@
 > 02. [📌 Descrizione Progetto](#descrizione)  
 > 03. [🗃️Descrizione Dataset](#dataset)
 > 04. [📄 Panoramica File](#panoramica-file)
-> 06. [📁 Struttura del Progetto](#struttura-progetto)  
-> 07. [🛠️ Stack Tecnologico](#stack-tecnologico)  
-> 08. [🚀 Installazione](#installazione)  
-> 09. [🧪 Run: Processo di Fine-Tuning](#fine-tuning)  
-> 10. [📊 Run: Benchmark e Confronto](#benchmark)  
-> 11. [📈 Metriche e Risultati](#metriche)  
-> 12. [🖥️ Hardware e Limitazioni](#hardware)  
-> 13. [📝 Licenze](#licenze)  
-> 14. [❓ Come Citare](#citare)
+> 05. [📁 Struttura del Progetto](#struttura-progetto)  
+> 06. [🛠️ Stack Tecnologico](#stack-tecnologico)  
+> 07. [🚀 Installazione](#installazione)  
+> 08. [🧪 Run: Processo di Fine-Tuning](#fine-tuning)  
+> 09. [📊 Run: Benchmark e Confronto](#benchmark)  
+> 10. [📈 Metriche e Risultati](#metriche)  
+> 11. [🖥️ Hardware e Limitazioni](#hardware)  
+> 12. [📝 Licenze](#licenze)  
+> 13. [❓ Come Citare](#citare)
 
 ---
 
@@ -140,7 +140,7 @@ Per la fase di Fine-Tuning su Google Colab, viene utilizzata la libreria **Unslo
 * **Innovazione Tecnica:** Unsloth implementa kernel PyTorch riscritti per l'ottimizzazione e utilizza la tecnica **QLoRA** (Quantized Low-Rank Adaptation).
 * **Risultato:** Questo stack ci ha permesso di addestrare un modello da 3 miliardi di parametri su una GPU Tesla T4 gratuita (16GB VRAM), riducendo i tempi di training di 2x e l'occupazione di memoria del 60%.
 
-## 6. 🚀 Installazione <a name="installazione"></a>
+## 7. 🚀 Installazione <a name="installazione"></a>
 
 Questa sezione guida passo dopo passo alla configurazione dell'ambiente di esecuzione locale.  
 La procedura è divisa in due parti: configurazione del **Codice Python** e configurazione di **LM Studio**.
@@ -222,3 +222,158 @@ Ora il tuo computer è pronto ad eseguire gli script e risponde all'indirizzo:
     http://localhost:1234
 
 **Nota:** Esegui prima lo script `split_dataset.py` per organizzare i dati e solo dopo lo script `model_evaluation.py` per testare il modello.
+
+## 8. 🧪 Run: Processo di Fine-Tuning <a name="fine-tuning"></a>
+
+Il processo di addestramento è stato eseguito su **Google Colab** sfruttando una GPU **NVIDIA Tesla T4 (16GB VRAM)**.
+Dato che il Fine-Tuning completo di un modello da 3 Miliardi di parametri richiederebbe risorse hardware proibitive, è stata adottata la tecnica **QLoRA** (Quantized Low-Rank Adaptation) tramite la libreria **Unsloth**.
+
+### 📋 Workflow di Addestramento
+Il notebook `Finetuning_Spam.ipynb` esegue automaticamente i seguenti passaggi:
+
+---
+
+#### 1. Setup dell'Ambiente
+Installazione di **Unsloth**, **Xformers** e **TRL** (Transformer Reinforcement Learning).
+
+---
+
+#### 2. Caricamento Dati
+Il notebook carica il file `train_unsloth.jsonl` (generato nel `split_dataset.py`) e applica il **Chat Template** standard di Llama 3:
+
+    <|start_header_id|>system<|end_header_id|>
+    You are a Cybersecurity AI...
+    <|start_header_id|>user<|end_header_id|>
+    [SMS TEXT]
+    <|start_header_id|>assistant<|end_header_id|>
+    SPAM
+
+---
+
+#### 3. Configurazione Iperparametri
+Sono stati impostati i seguenti parametri per massimizzare la stabilità su dataset di piccole dimensioni:
+
+- **Learning Rate:** `2e-4` (standard per QLoRA)
+- **Max Steps:** `60` (sufficienti senza rischio di overfitting)
+- **Batch Size:** `2` 
+- **Data Collator:** `train_on_responses_only`  
+  Il modello impara a generare solo la risposta, ignorando il prompt utente nel calcolo della loss.
+
+---
+
+#### 4. Conversione ed Esportazione (GGUF)
+Al termine del training, gli adattatori **LoRA** sono stati fusi con il modello base.  
+Il risultato finale è stato convertito nel formato **GGUF** con quantizzazione **Q4_K_M (4-bit Medium)**.
+
+**Perché proprio Q4_K_M?**  
+Rappresenta il *sweet spot* ideale: riduce il peso del modello da ~6GB a ~2GB con una perdita di precisione tranquillamente trascurabile, rendendolo eseguibile su qualsiasi laptop non molto potente.
+
+## 9. 📊 Run: Benchmark e Confronto <a name="benchmark"></a>
+
+Per valutare oggettivamente le performance, non bastava "chattare" manualmente con i modelli quindi è stata creata una **pipeline di valutazione automatizzata** (`src/model_evaluation.py`) che garantisce che ogni modello venga testato esattamente nelle stesse condizioni.
+
+---
+
+### ⚙️ Metodologia di Test
+
+1. **Stesso Dataset:**  
+   Tutti i modelli vengono valutati sul file `test_benchmark.csv` (il 20% dei dati mai visti durante il training).
+
+2. **Stesso Prompt:**  
+   Utilizziamo lo stesso identico *System Prompt* per tutti i modelli, per valutare chi obbedisce meglio alle istruzioni.
+
+3. **Temperatura 0:**  
+   Impostiamo `temperature=0.0` nel client API per azzerare la casualità.
+
+---
+
+### 🐍 Analisi del Codice (`benchmark_runner.py`)
+
+Lo script Python funge da **orchestratore** dell’intero processo di valutazione.  
+Di seguito i componenti chiave del codice.
+
+---
+
+#### 1. Connessione al Server Locale
+
+Invece di usare librerie pesanti o modelli caricati direttamente nello script, ci connettiamo a **LM Studio** come se fosse una API remota:
+
+    llm = ChatOpenAI(
+        base_url="http://localhost:1234/v1",  # Server locale di LM Studio
+        api_key="lm-studio",                  # Placeholder (non serve una vera API key)
+        temperature=0.0                       # Determinismo assoluto
+    )
+
+Questo approccio permette di **cambiare modello direttamente da LM Studio senza modificare una sola riga di codice Python.
+
+---
+
+#### 2. La Chain (LangChain Expression Language)
+
+Utilizziamo la sintassi **LCEL** (pipe syntax `|`) per definire il flusso di elaborazione in modo chiaro e leggibile:
+
+    # Definizione della struttura: Prompt -> Modello -> Parser
+    chain = prompt | llm | StrOutputParser()
+
+- **Prompt:** Inserisce l’SMS nel template di sicurezza  
+- **LLM:** Invia la richiesta al server locale  
+- **Parser:** Pulisce l’output (spazi, newline, caratteri indesiderati), restituendo una stringa finale pulita
+
+---
+
+#### 3. Loop di Valutazione e Misurazione della Latenza
+
+Il cuore dello script è un ciclo `for` che itera su ogni riga del dataset di test.  
+Per ogni SMS, misuriamo il tempo di risposta del modello:
+
+    start_time = time.time()          # ⏱️ Avvio cronometro
+    response = chain.invoke(...)      # Chiamata al modello
+    end_time = time.time()            # 🛑 Stop cronometro
+
+    latency = end_time - start_time   # Calcolo della latenza
+
+---
+
+#### 4. Parsing "Strict" (Controllo Rigoroso)
+
+Poiché l’automazione richiede risposte precise, il codice verifica che l’output contenga **esattamente** le parole chiave attese:
+
+    cleaned_resp = response.lower().strip()
+
+    if "spam" in cleaned_resp:
+        predicted = "spam"
+    elif "ham" in cleaned_resp:
+        predicted = "ham"
+    else:
+        # Se il modello divaga o non risponde correttamente,
+        # viene segnato come errore o gestito con logica di fallback.
+        predicted = "error"
+
+Questo garantisce una valutazione **robusta e imparziale**, penalizzando risposte ambigue o fuori specifica.
+
+---
+
+### 🕹️ Come Eseguire il Benchmark
+
+Per replicare i nostri risultati, segui questa procedura per **ogni modello** che vuoi testare.
+
+#### 1. Prepara LM Studio
+- Carica il modello desiderato (es. **Llama 3.2 Fine-Tuned**)  
+- Avvia il **Local Server** cliccando sul pulsante verde **"Start Server"**
+
+#### 2. Esegui lo Script
+Apri il terminale nella cartella del progetto ed esegui:
+
+    python src/benchmark_runner.py
+
+#### 3. Leggi i Risultati
+Lo script stamperà a video le metriche in tempo reale e salverà un file CSV dettagliato:
+
+    🏆 RISULTATI DEL BENCHMARK
+    ============================================================
+    🎯 ACCURACY:       99.10%
+    ⚡ VELOCITÀ MEDIA: 0.2105 secondi/messaggio
+
+#### 4. Cambia e Ripeti
+Torna su **LM Studio**, ferma il server, carica un altro modello (es. *DeepSeek R1*), riavvia il server ed esegui nuovamente lo script.
+
