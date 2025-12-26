@@ -1,7 +1,11 @@
 # 🛡️ DLA2: SMS SPAM DETECTION 2024/25 - UNICA
 
 <p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Phishing_Alert_Icon.svg/240px-Phishing_Alert_Icon.svg.png" alt="Phishing Alert" width="100">
+  <br>
+  <span style="font-size: 80px;">🚨 📲 🚫</span>
+  <br>
+  <i>SMS Spam & Phishing Detection Benchmark</i>
+  <br>
 </p>
 
 <p align="center">
@@ -20,7 +24,7 @@
 </p>
 
 <p align="center">
-  Progetto di <b>Binary Classification</b> su SMS Spam confrontando diversi modelli.
+  Progetto di <b>Binary Classification</b> su SMS Spam confrontando modelli Generalisti, Reasoning e Fine-Tuned.
 </p>
 
 ---
