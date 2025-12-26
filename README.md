@@ -140,6 +140,85 @@ Per la fase di Fine-Tuning su Google Colab, viene utilizzata la libreria **Unslo
 * **Innovazione Tecnica:** Unsloth implementa kernel PyTorch riscritti per l'ottimizzazione e utilizza la tecnica **QLoRA** (Quantized Low-Rank Adaptation).
 * **Risultato:** Questo stack ci ha permesso di addestrare un modello da 3 miliardi di parametri su una GPU Tesla T4 gratuita (16GB VRAM), riducendo i tempi di training di 2x e l'occupazione di memoria del 60%.
 
+## 6. 🚀 Installazione <a name="installazione"></a>
 
+Questa sezione guida passo dopo passo alla configurazione dell'ambiente di esecuzione locale.  
+La procedura è divisa in due parti: configurazione del **Codice Python** e configurazione di **LM Studio**.
 
+---
 
+### Parte A: Configurazione Python
+
+#### 1. Prerequisiti
+Assicurati di avere installato **Python 3.10** (o superiore) e **Git**.  
+Puoi verificarlo aprendo il terminale (o Prompt dei Comandi) e digitando:
+
+    python --version
+
+---
+
+#### 2. Clona il Repository
+Scarica il progetto sul tuo computer:
+
+    git clone https://github.com/TUO-USERNAME/DLA2-Spam-Detection.git
+    cd DLA2-Spam-Detection
+
+---
+
+#### 3. Crea l'Ambiente Virtuale
+È fondamentale isolare le librerie del progetto per non creare conflitti col sistema.
+
+**Su Windows:**
+
+    python -m venv venv
+    .\venv\Scripts\activate
+
+**Su Mac/Linux:**
+
+    python3 -m venv venv
+    source venv/bin/activate
+
+Se l'attivazione ha successo, vedrai comparire `(venv)` all'inizio della riga del terminale.
+
+---
+
+#### 4. Installa le Dipendenze
+Esegui il comando per installarle tutte le dipendenze:
+
+    pip install -r requirements.txt
+
+---
+
+### Parte B: Configurazione LM Studio
+
+Per far funzionare gli script, **LM Studio** deve agire come un server API locale.
+
+#### 1. Scarica e Installa
+Scarica LM Studio da **https://lmstudio.ai** e installalo.
+
+---
+
+#### 2. Carica il Modello
+- Apri **LM Studio**
+- Clicca sulla **Lente d'ingrandimento (Search)**
+- Cerca il modello che vuoi testare
+- Scarica la versione quantizzata **Q4_K_M** (consigliata)
+
+**Nota:** Per usare il modello Fine-Tuned del progetto (file `.gguf`), trascinalo semplicemente nella cartella dove vengono installati gli altri modelli di LM Studio.
+
+---
+
+#### 3. Avvia il Server
+- Clicca sull'icona Developer nella barra laterale sinistra
+- Assicurati che l'opzione **Cross-Origin-Resource-Sharing (CORS)** sia attiva
+- Clicca sul pulsante verde **"Start Server"**
+- Seleziona il modello che ti interessa nella barra **Select a model to load**
+
+---
+
+✅ **Fatto!**  
+Ora il tuo computer è pronto ad eseguire gli script e risponde all'indirizzo:
+
+    http://localhost:1234
+
+**Nota:** Esegui prima lo script `split_dataset.py` per organizzare i dati e solo dopo lo script `model_evaluation.py` per testare il modello.
