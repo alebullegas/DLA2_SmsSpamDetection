@@ -33,8 +33,7 @@
 > 09. [📊 Run: Benchmark e Confronto](#benchmark)  
 > 10. [📈 Metriche e Risultati](#metriche)  
 > 11. [🖥️ Hardware e Limitazioni](#hardware)  
-> 12. [📝 Licenze](#licenze)  
-> 13. [❓ Come Citare](#citare)
+> 12. [📝 Licenze](#licenze)
 
 ---
 
@@ -376,4 +375,33 @@ Lo script stamperà a video le metriche in tempo reale e salverà un file CSV de
 
 #### 4. Cambia e Ripeti
 Torna su **LM Studio**, ferma il server, carica un altro modello (es. *DeepSeek R1*), riavvia il server ed esegui nuovamente lo script.
+
+## 10. 📈 Metriche e Risultati <a name="metriche"></a>
+
+## 10. 🖥️ Hardware e Limitazioni <a name="hardware"></a>
+
+> [!NOTE]
+> 🧪 Tutto il processo di training e valutazione è stato condotto con risorse accessibili per dimostrare la scalabilità della soluzione.
+
+| Fase | Hardware Utilizzato | Note Tecniche |
+| :--- | :--- | :--- |
+| **Training** (Cloud) | **NVIDIA Tesla T4** (16GB VRAM) | Ambiente **Google Colab Free Tier**. Grazie alla quantizzazione 4-bit, il picco di memoria è rimasto sotto i 6GB. |
+| **Inference** (Locale) | **Laptop Consumer** (CPU/GPU Integrata) | Modello eseguito via **LM Studio**. La latenza media di ~0.2s dimostra che non serve hardware enterprise per l'inferenza. |
+
+> [!WARNING]
+> **Limitazioni del Modello:**
+> - Il modello Fine-Tuned è specializzato verticalmente sullo SPAM. Se interrogato su argomenti generali (es. "Qual è la capitale della Francia?"), potrebbe cercare di classificare anche quella domanda come HAM/SPAM o rispondere in modo breve. È un *Specialist*, non un *Generalist*.
+> - Il dataset contiene principalmente SMS in lingua inglese. Le performance su SMS in italiano non sono garantite senza un ulteriore fine-tuning multilingua.
+
+---
+
+## 11. 📝 Licenze <a name="licenze"></a>
+> [!NOTE]
+> **Code**: Il codice sorgente di questo repository è rilasciato sotto licenza [Apache License 2.0](./LICENSE).
+>
+> **Models**: Il modello base `Llama-3.2` è soggetto alla **Meta Llama Community License**. `DeepSeek-R1` è soggetto alla licenza open source rispettiva.
+>
+> **Dataset**: L'SMS Spam Collection è di pubblico dominio (UCI Machine Learning Repository).
+
+---
 
