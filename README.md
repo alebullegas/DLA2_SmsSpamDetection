@@ -12,6 +12,7 @@
   <a href="https://python.langchain.com/" target="_blank">
     <img src="https://img.shields.io/badge/Orchestration-LangChain-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white" alt="LangChain"/>
   </a>
+  ---
 </p>
 > ## 📑 Indice
 > 01. [🧑🏻‍🎓 Studente](#studente)  
