@@ -1,7 +1,7 @@
 # 🛡️ DLA2: SMS SPAM DETECTION 2024/25 - UNICA
 
 <p align="center">
-  <img src="https://img.icons8.com/fluency/100/smartphone-alert.png" alt="Smishing Icon" width="100">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Phishing_Alert_Icon.svg/240px-Phishing_Alert_Icon.svg.png" alt="Phishing Alert" width="100">
 </p>
 
 <p align="center">
