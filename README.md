@@ -372,54 +372,86 @@ Torna su **LM Studio**, ferma il server, carica un altro modello (es. *DeepSeek 
 
 ## 9. 📈 Metriche e Risultati <a name="metriche"></a>
 
-Questa sezione illustra i risultati quantitativi ottenuti sul **Test Set (20% del dataset, N=1115 messaggi)**.
-L'obiettivo del benchmark era verificare se un modello piccolo e specializzato (**Specialist**) potesse superare modelli più grandi dotati di capacità di ragionamento avanzata (**Reasoning**) o modelli generalisti non addestrati (**Baseline**).
+In questa sezione presentiamo i risultati quantitativi ottenuti sul **Test Set (1.115 messaggi, pari al 20% del totale)**. Questi dati sono stati isolati prima del training e non sono mai stati visti dal modello durante la fase di apprendimento.
 
-### 9.1 Protocollo di Sperimentazione
-Tutti i modelli sono stati testati nelle medesime condizioni per garantire la riproducibilità scientifica:
-* **Hardware:** Inferenza eseguita su CPU/GPU consumer via LM Studio.
-* **Prompt:** System Prompt identico per tutti (*"Reply with ONLY one word..."*).
-* **Temperatura:** 0.0 (Determinismo assoluto).
-* **Metrica Chiave:** Accuracy, F1-Score (classe SPAM) e Latenza di risposta.
+Il benchmark ha confrontato tre architetture distinte per valutare l'impatto del Fine-Tuning rispetto alle capacità native dei modelli.
 
-### 9.2 Tabella Comparativa
+### 9.1 Tabella Riepilogativa delle Performance
 
-| Modello | Tipo | Parametri | Accuracy | Latenza Media | Analisi Sintetica |
+| Modello | Ruolo | Accuracy | Precision (Spam) | Recall (Spam) | Latenza (avg) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Llama-3.2-3B-Instruct (Fine-Tuned)** | **Specialist** | **3B** | **[INSERISCI %]** | **~0.20s** | 🏆 **SOTA (State of the Art)** per questo task. |
-| **Llama-3.2-3B-Instruct (Base)** | Baseline | 3B | [INSERISCI %] | [INS. SEC]s | Buona comprensione, ma possibili errori di formato. |
-| **DeepSeek-R1-Distill-Llama** | Reasoning | 8B | 30.04% | 7.41s | ⚠️ **Fallimento Critico** (Eccessivi Falsi Positivi). |
+| **Llama-3.2-3B Fine-Tuned** | **Specialist** | **93.09%** | **0.68** | **0.98** | **0.23s** |
+| **DeepSeek-R1-Distill (8B)** | Reasoning | 30.04% | 0.14 | 0.76 | 7.41s |
+| **Llama-3.2-3B Base** | Baseline | 19.28% | 0.15 | 1.00 | 0.26s |
+
+> **Nota Metodologica:**
+> * **Accuracy:** Percentuale di risposte corrette sul totale.
+> * **Recall (Spam):** Capacità di intercettare le minacce reali (evitare falsi negativi).
+> * **Latenza:** Tempo medio di risposta per singolo messaggio (Hardware: Consumer GPU).
 
 ---
 
-### 9.3 Analisi Approfondita dei Modelli
+### 9.2 Analisi Critica dei Risultati
 
-#### 🟢 1. Il Vincitore: Llama-3.2-3B Fine-Tuned (Specialist)
-Il modello, addestrato con tecnica **QLoRA**, dimostra l'efficacia del *Domain Adaptation*.
-* **Performance:** Ha appreso perfettamente la distribuzione dei dati SPAM/HAM e il vincolo di formattazione.
-* **Efficienza:** Non dovendo generare token di "ragionamento" intermedio, la risposta è istantanea (Low Latency), rendendolo l'unico candidato idoneo per un filtro antispam in tempo reale.
+Di seguito analizziamo il comportamento di ogni modello, spiegando le cause tecniche delle performance.
 
-#### 🟡 2. Il Riferimento: Llama-3.2-3B Base (Zero-Shot)
-Utilizzato come *Baseline*, questo modello mostra le capacità native di Llama 3.2.
-* **Osservazioni:** Senza fine-tuning, il modello tende a essere più discorsivo o a interpretare in modo ambiguo messaggi borderline. (Serve a dimostrare che il lavoro di training fatto nel punto 7 ha avuto un impatto reale).
+#### 🏆 1. Llama-3.2-3B Instruct (Fine-Tuned) - Il Vincitore
+Il modello addestrato con tecnica **QLoRA** ha raggiunto l'obiettivo del progetto, dimostrando un equilibrio eccellente tra sicurezza e usabilità.
+* **Sicurezza Massima (Recall 98%):** Su 157 messaggi di spam reali nel test set, il modello ne ha bloccati correttamente **154**. Ne ha lasciati passare solo 3. Questo lo rende un filtro estremamente robusto.
+* **Usabilità (Accuracy 93%):** A differenza degli altri modelli, il Fine-Tuned ha imparato a riconoscere i messaggi legittimi (HAM), riducendo drasticamente i falsi allarmi.
+* **Efficienza:** Con **0.23 secondi** di risposta, è idoneo per applicazioni real-time.
 
-#### 🔴 3. Il Caso di Studio: DeepSeek-R1-Distill-Llama (Reasoning)
-Il risultato di questo modello (Accuracy: 30.04%) è il dato più interessante dal punto di vista della ricerca. Nonostante sia un modello da **8 Miliardi** di parametri con capacità di *Chain-of-Thought*, ha fallito drasticamente nel task.
+#### ⚠️ 2. DeepSeek-R1-Distill-Llama (8B) - Il Paradosso del "Reasoning"
+Nonostante sia un modello più grande (8B) e dotato di capacità di ragionamento (*Chain of Thought*), ha performato male (Accuracy 30%).
+* **Il problema dell'Over-Thinking:** Il modello tende a "sovra-analizzare" i messaggi. Il processo di ragionamento lo porta a vedere potenziali inganni anche in messaggi innocui, generando un numero elevatissimo di **Falsi Positivi (743)**.
+* **Latenza Inaccettabile:** Richiede in media **7.41 secondi** per messaggio, rendendolo 32 volte più lento del modello specializzato.
+* **Conclusione:** I modelli *Reasoning* non sono adatti a task di classificazione rapida/binaria senza un prompt engineering estremo.
 
-**Matrice di Confusione (DeepSeek R1):**
-    [[ 120 (TP)   37 (FN) ]   <-- Recall SPAM: 76% (Discreta identificazione minacce)
-     [ 743 (FP)  215 (TN) ]]  <-- False Positive Rate: Altissimo!
+#### ❌ 3. Llama-3.2-3B Instruct (Base) - La Baseline
+Il modello base (senza fine-tuning) mostra perché l'addestramento era necessario.
+* **Mode Collapse (Paranoia):** Il modello ha classificato quasi l'intero dataset come SPAM.
+* **Il falso mito della Recall 100%:** Sebbene abbia intercettato tutti gli spam (Recall 1.00), lo ha fatto bloccando anche **900 messaggi legittimi su 958**. Questo rende il modello inutilizzabile in uno scenario reale, poiché l'utente non riceverebbe quasi più messaggi.
 
-**Perché ha fallito? Analisi delle cause:**
-1.  **Over-Thinking (Sovra-analisi):** Il processo di ragionamento (`<think>...`) ha portato il modello a vedere "inganni" o "pattern sospetti" anche in messaggi legittimi, generando un numero inaccettabile di Falsi Positivi (743 messaggi onesti bloccati su 958).
-2.  **Format Violation:** I modelli *Reasoning* faticano a rispettare vincoli negativi ("Non scrivere altro"). Spesso l'output conteneva spiegazioni che il parser ha dovuto scartare o classificare come errore.
-3.  **Latenza:** Con una media di **7.41 secondi**, il modello è 35 volte più lento dello Specialist, rendendolo inutilizzabile per filtrare SMS in arrivo.
+---
 
-### 9.4 Conclusioni Scientifiche
-I risultati confermano l'ipotesi iniziale del progetto:
-> *"Per task di classificazione binaria su domini verticali, un modello piccolo finetunato (Small Specialist) è superiore in accuratezza ed efficienza rispetto a un modello grande generalista (Large Reasoner)."*
+### 9.3 Allegato Tecnico: Report Dettagliati
+Per trasparenza scientifica, riportiamo i raw data generati dallo script di benchmark (`benchmark_runner.py`).
 
-Il Fine-Tuning con QLoRA si conferma la strategia ottimale per bilanciare **costi computazionali** e **accuratezza operativa**.
+**A. Modello Fine-Tuned (Specialist)**
+Si nota la diagonale principale della matrice molto popolata (risposte corrette).
+    
+    Matrice di Confusione:
+    [[154 (TP)    3 (FN)]   <-- Ottima intercettazione Spam
+     [ 74 (FP)  884 (TN)]]  <-- Buona distinzione Ham
+
+                  precision    recall  f1-score   support
+            spam       0.68      0.98      0.80       157
+             ham       1.00      0.92      0.96       958
+        accuracy                           0.93      1115
+
+**B. Modello DeepSeek R1 (Reasoning)**
+Alto numero di Falsi Positivi (743) che distrugge l'Accuracy.
+
+    Matrice di Confusione:
+    [[ 120 (TP)   37 (FN)]
+     [ 743 (FP)  215 (TN)]] <-- Troppi messaggi buoni bloccati
+
+                  precision    recall  f1-score   support
+            spam       0.14      0.76      0.24       157
+             ham       0.85      0.22      0.35       958
+        accuracy                           0.30      1115
+
+**C. Modello Base (Zero-Shot)**
+Il modello ha predetto quasi solo "SPAM", ignorando la classe "HAM".
+
+    Matrice di Confusione:
+    [[157 (TP)    0 (FN)]
+     [900 (FP)   58 (TN)]] <-- Disastroso sui messaggi legittimi
+
+                  precision    recall  f1-score   support
+            spam       0.15      1.00      0.26       157
+             ham       1.00      0.06      0.11       958
+        accuracy                           0.19      1115
 
 
 ## 10. 🖥️ Hardware e Limitazioni <a name="hardware"></a>
