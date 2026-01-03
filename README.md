@@ -370,7 +370,10 @@ Lo script stamperà a video le metriche in tempo reale e salverà un file CSV de
 #### 4. Cambia e Ripeti
 Torna su **LM Studio**, ferma il server, carica un altro modello (es. *DeepSeek R1*), riavvia il server ed esegui nuovamente lo script.
 
-## 10. 📈 Metriche e Risultati <a name="metriche"></a>
+## 9. 📈 Metriche e Risultati <a name="metriche"></a>
+
+Di seguito sono riportati i risultati dei benchmark eseguiti sul modello **DeepSeek R1 Distill Llama 8B**. Questa sezione confronta l'esecuzione iniziale (Run 1) con l'esecuzione successiva ottimizzata (Run 2), evidenziando il miglioramento nell'accuratezza e nella capacità di distinzione delle classi. ### 📊 Tabella Comparativa Performance | Metrica | Run 1 (Iniziale) | Run 2 (Ottimizzata) | Delta | | :--- | :---: | :---: | :---: | | **Accuracy** | 14.08% | **30.04%** | 📈 +15.96% | | **Velocità Media** | 7.38 s/msg | 7.41 s/msg | ➖ Stabile | | **Precision (Spam)** | 0.14 | 0.14 | ➖ Stabile | | **Recall (Spam)** | 1.00 | 0.76 | 📉 -0.24 | | **Precision (Ham)** | 0.00 ⚠️ | **0.85** | 📈 +0.85 | | **Recall (Ham)** | 0.00 ⚠️ | 0.22 | 📈 +0.22 | | **F1-Score (Macro)** | 0.12 | 0.29 | 📈 +0.17 | > **Nota Tecnica:** La *Run 1* presentava un warning critico (`UndefinedMetricWarning`) dovuto all'incapacità del modello di predire correttamente la classe *Ham* (0 sample predetti). La *Run 2* risolve questo problema strutturale iniziando a classificare correttamente parte del dataset. --- ### 🔍 Analisi Dettagliata Run 1 (Baseline) In questa fase il modello soffriva di un forte bias, classificando ogni input come `spam`. Matrice di Confusione: [[157   0] [958   0]] Warnings: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. --- ### 🚀 Analisi Dettagliata Run 2 (Ottimizzata) Il modello mostra una capacità di generalizzazione migliorata, riducendo i falsi positivi totali e iniziando a distinguere correttamente la classe *Ham*. Matrice di Confusione: [[120  37] [743 215]] Classification Report Completo: precision recall f1-score support spam 0.14 0.76 0.24 157 ham 0.85 0.22 0.35 958 accuracy 0.30 1115 macro avg 0.50 0.49 0.29 1115 weighted avg 0.75 0.30 0.34 1115
+
 
 ## 10. 🖥️ Hardware e Limitazioni <a name="hardware"></a>
 
