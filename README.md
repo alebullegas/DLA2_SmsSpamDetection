@@ -21,7 +21,7 @@
 > 03. [🗃️Descrizione Dataset](#dataset)
 > 04. [📄 Panoramica File](#panoramica-file)
 > 05. [📁 Struttura del Progetto](#struttura-progetto)  
-> 06. [🛠️ Stack Tecnologico](#stack-tecnologico)  
+> 06. [🛠️ Tecnologie Utilizzate](#tecnologie)  
 > 07. [🚀 Installazione](#installazione)  
 > 08. [🧪 Processo di Fine-Tuning](#fine-tuning)  
 > 09. [📊 Benchmark e Confronto](#benchmark)  
@@ -113,13 +113,13 @@ Ecco come appaiono i dati grezzi che il modello deve imparare a distinguere:
 └── README.md                     # Documentazione
 ```
 
-## 6. 🛠️ Stack Tecnologico <a name="stack-tecnologico"></a>
+## 6. 🛠️ Tecnologie Utilizzate <a name="tecnologie"></a>
 ### 🟣 LM Studio
 **LM Studio** non viene usato come semplice interfaccia grafica, ma come vero e proprio **Server Locale**.
 * **Ruolo Architetturale:** LM Studio carica i modelli e sfrutta la GPU/CPU del pc per eseguire i calcoli.
 * **Integrazione API:** La funzionalità chiave utile per il progetto è il suo **Local Server** compatibile con le specifiche OpenAI (`http://localhost:1234/v1`). Questo ci permette di disaccoppiare il modello dallo script Python: possiamo sostituire il "motore" ( passando da un modello ad un altro) in tempo reale senza modificare il codice.
 
-### 🦜🔗 LangChain
+### 🔗 LangChain
 **LangChain** funge come livello di astrazione logica tra il nostro codice Python e il modello linguistico.
 * **Prompt Templating:** Gestisce la costruzione dinamica dei messaggi, inserendo il `System Prompt` (le regole) e lo `User Prompt` (l'SMS da analizzare) nel formato corretto atteso dal modello.
 * **Output Parsing:** Utilizzando `StrOutputParser`, LangChain intercetta la risposta grezza dell'LLM e la pulisce da eventuali meta-tag o spazi bianchi, garantendo che il dato salvato nel CSV sia pulito e pronto per l'analisi.
@@ -217,7 +217,7 @@ Il processo di addestramento viene eseguito su **Google Colab** sfruttando una G
 Dato che il Fine-Tuning completo di un modello da 3 Miliardi di parametri richiederebbe risorse hardware proibitive, è stata adottata la tecnica **QLoRA** (Quantized Low-Rank Adaptation) tramite la libreria **Unsloth**.
 
 ### 📋 Workflow di Addestramento
-Il notebook `Finetuning_Spam.ipynb` esegue automaticamente i seguenti passaggi:
+Il notebook `Finetuning_Spam.ipynb` ([Download with Google Drive](https://drive.google.com/file/d/1HUFtIkS4cmYw1Lsim6e_IwYwrNI4vrsV/view?usp=sharing)) esegue automaticamente i seguenti passaggi:
 
 ---
 
@@ -318,7 +318,7 @@ Per ogni SMS, misuriamo il tempo di risposta del modello:
 
 ---
 
-#### 4. Parsing "Strict" (Controllo Rigoroso)
+#### 4. Parsing "Strict" 
 
 Poiché l’automazione richiede risposte precise, il codice verifica che l’output contenga **esattamente** le parole chiave attese:
 
