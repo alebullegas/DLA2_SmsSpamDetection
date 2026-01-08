@@ -191,10 +191,7 @@ Scarica LM Studio da **https://lmstudio.ai** e installalo.
 - Scarica la versione quantizzata **Q4_K_M** (consigliata)
 
 **Nota:** Per usare il modello Fine-Tuned del progetto (file `.gguf`), trascinalo semplicemente nella cartella dove vengono installati gli altri modelli di LM Studio
-## 📥 Download Modello
-A causa delle dimensioni del file, il modello Fine-Tuned è scaricabile esternamente:
-
-[![Download with Google Drive](https://img.shields.io/badge/Google_Drive-Download_GGUF-green?style=for-the-badge&logo=google-drive&logoColor=white)](INCOLLA_QUI_IL_LINK)
+A causa delle dimensioni del file, il modello Fine-Tuned è scaricabile esternamente: [![Download with Google Drive](https://drive.google.com/file/d/1HUFtIkS4cmYw1Lsim6e_IwYwrNI4vrsV/view?usp=sharing)
 
 ---
 
