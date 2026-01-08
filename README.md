@@ -25,7 +25,7 @@
 > 07. [🚀 Installazione](#installazione)  
 > 08. [🧪 Processo di Fine-Tuning](#fine-tuning)  
 > 09. [📊 Benchmark e Confronto](#benchmark)  
-> 10. [📈 Metriche e Risultati](#metriche)  
+> 10. [📈 Risultati](#risultati)  
 > 11. [🖥️ Hardware e Limitazioni](#hardware)  
 > 12. [📝 Licenze](#licenze)
 
@@ -85,7 +85,7 @@ Ecco come appaiono i dati grezzi che il modello deve imparare a distinguere:
 
 | File | Tipo | Descrizione |
 | :--- | :--- | :--- |
-| `split_dataset.py` | 🐍 Script | Lo script si occupa di pulire il dataset raw (`spam.csv`), mescolarlo e dividerlo rigorosamente in Training Set (80%) e Test Set (20%) per evitare *Overfitting*. |
+| `split_dataset.py` | 🐍 Script | Lo script si occupa di pulire il dataset (`spam.csv`), mescolarlo e dividerlo rigorosamente in Training Set (80%) e Test Set (20%) per evitare *Overfitting*. |
 | `model_evaluation.py` | 🐍 Script | Lo script che interroga LM Studio, misura la latenza e calcola le metriche sui modelli. |
 | `train_unsloth.jsonl` | 📄 Dati | Il file JSONL formattato contenente solo gli esempi per l'addestramento da utilizzare su Colab. |
 | `test_benchmark.csv` | 📄 Dati | La parte restante del dataset usato solo per la valutazione finale. |
@@ -284,16 +284,16 @@ Lo script orchestra l’intero processo di valutazione.
 Connessione a **LM Studio** come se fosse una API remota:
 
     llm = ChatOpenAI(
-        base_url="http://localhost:1234/v1",  # Server locale di LM Studio
-        api_key="lm-studio",                  # Placeholder (non serve una vera API key)
-        temperature=0.0                       # Determinismo assoluto
+        base_url="http://localhost:1234/v1",  
+        api_key="lm-studio",                  
+        temperature=0.0                       
     )
 
-Questo approccio permette di **cambiare modello direttamente da LM Studio senza modificare una sola riga di codice Python.
+Questo approccio permette di **cambiare modello direttamente da LM Studio senza modificare una sola riga di codice.
 
 ---
 
-#### 2. La Chain (LangChain Expression Language)
+#### 2. LangChain Expression Language
 
 Utilizziamo la sintassi **LCEL** (pipe syntax `|`) per definire il flusso di elaborazione in modo chiaro e leggibile:
 
@@ -311,9 +311,9 @@ Utilizziamo la sintassi **LCEL** (pipe syntax `|`) per definire il flusso di ela
 Il cuore dello script è un ciclo `for` che itera su ogni riga del dataset di test.  
 Per ogni SMS, misuriamo il tempo di risposta del modello:
 
-    start_time = time.time()          # ⏱️ Avvio cronometro
+    start_time = time.time()          # Avvio cronometro
     response = chain.invoke(...)      # Chiamata al modello
-    end_time = time.time()            # 🛑 Stop cronometro
+    end_time = time.time()            # Stop cronometro
 
     latency = end_time - start_time   # Calcolo della latenza
 
@@ -338,35 +338,31 @@ Questo garantisce una valutazione **robusta e imparziale**, penalizzando rispost
 
 ---
 
-### 🕹️ Come Eseguire il Benchmark
-
-Per replicare i nostri risultati, segui questa procedura per **ogni modello** che vuoi testare.
+### 🕹️ Reminder Veloce Esecuzione
 
 #### 1. Prepara LM Studio
-- Carica il modello desiderato (es. **Llama 3.2 Fine-Tuned**)  
-- Avvia il **Local Server** cliccando sul pulsante verde **"Start Server"**
+- Carica il modello desiderato 
+- Avvia il **Local Server** 
 
 #### 2. Esegui lo Script
-Apri il terminale nella cartella del progetto ed esegui:
+Esegui prima lo script `split_dataset.py` per organizzare i dati, poi apri il terminale nella cartella del progetto ed esegui:
 
-    python src/benchmark_runner.py
+    python src/model_evaluation.py
 
 #### 3. Leggi i Risultati
 Lo script stamperà a video le metriche in tempo reale e salverà un file CSV dettagliato:
 
-    🏆 RISULTATI DEL BENCHMARK
+    ***RISULTATI DEL BENCHMARK***
     ============================================================
-    🎯 ACCURACY:       99.10%
-    ⚡ VELOCITÀ MEDIA: 0.2105 secondi/messaggio
+    ACCURACY:       xx.xx%
+    VELOCITÀ MEDIA: x.xxx secondi/messaggio
 
 #### 4. Cambia e Ripeti
-Torna su **LM Studio**, ferma il server, carica un altro modello (es. *DeepSeek R1*), riavvia il server ed esegui nuovamente lo script.
+Torna su **LM Studio**, ferma il server, carica un altro modello, riavvia il server ed esegui nuovamente lo script.
 
-## 9. 📈 Metriche e Risultati <a name="metriche"></a>
+## 9. 📈 Risultati <a name="risultati"></a>
 
-In questa sezione presentiamo i risultati quantitativi ottenuti sul **Test Set (1.115 messaggi, pari al 20% del totale)**. Questi dati sono stati isolati prima del training e non sono mai stati visti dal modello durante la fase di apprendimento.
-
-Il benchmark ha confrontato tre architetture distinte per valutare l'impatto del Fine-Tuning rispetto alle capacità native dei modelli.
+Sono state confrontate tre architetture distinte per valutare l'impatto del Fine-Tuning rispetto alle capacità native dei modelli.
 
 ### 9.1 Tabella Riepilogativa delle Performance
 
@@ -374,7 +370,7 @@ Il benchmark ha confrontato tre architetture distinte per valutare l'impatto del
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Llama-3.2-3B Fine-Tuned** | **Specialist** | **93.09%** | **0.68** | **0.98** | **0.23s** |
 | **DeepSeek-R1-Distill (8B)** | Reasoning | 30.04% | 0.14 | 0.76 | 7.41s |
-| **Llama-3.2-3B Base** | Baseline | 19.28% | 0.15 | 1.00 | 0.26s |
+| **Llama-3.2-3B Base** | Base Model | 19.28% | 0.15 | 1.00 | 0.26s |
 
 > **Nota Metodologica:**
 > * **Accuracy:** Percentuale di risposte corrette sul totale.
@@ -387,58 +383,56 @@ Il benchmark ha confrontato tre architetture distinte per valutare l'impatto del
 
 Di seguito analizziamo il comportamento di ogni modello, spiegando le cause tecniche delle performance.
 
-#### 🏆 1. Llama-3.2-3B Instruct (Fine-Tuned) - Il Vincitore
-Il modello addestrato con tecnica **QLoRA** ha raggiunto l'obiettivo del progetto, dimostrando un equilibrio eccellente tra sicurezza e usabilità.
-* **Sicurezza Massima (Recall 98%):** Su 157 messaggi di spam reali nel test set, il modello ne ha bloccati correttamente **154**. Ne ha lasciati passare solo 3. Questo lo rende un filtro estremamente robusto.
-* **Usabilità (Accuracy 93%):** A differenza degli altri modelli, il Fine-Tuned ha imparato a riconoscere i messaggi legittimi (HAM), riducendo drasticamente i falsi allarmi.
-* **Efficienza:** Con **0.23 secondi** di risposta, è idoneo per applicazioni real-time.
+#### 🏆 1. Llama-3.2-3B Instruct (Fine-Tuned) - Vincitore
+Il modello addestrato con tecnica **QLoRA** ha ottenuto i risultati migliori, dimostrando sicurezza e usabilità.
+* **Sicurezza Massima (Recall 98%):** Si é dimostrato un filtro estremamente robusto, infatti in questo specifico caso, su 157 messaggi di spam reali nel test set il modello ne ha bloccati correttamente **154**, lasciandone passare solo 3.
+* **Usabilità (Accuracy 93%):** A differenza degli altri modelli, il Fine-Tuned ha imparato a riconoscere i messaggi legittimi riducendo drasticamente i falsi allarmi.
+* **Efficienza:** Con **0.23 secondi** di risposta, è stato il modello piú veloce.
 
-#### ⚠️ 2. DeepSeek-R1-Distill-Llama (8B) - Il Paradosso del "Reasoning"
+#### ⚠️ 2. DeepSeek-R1-Distill-Llama
 Nonostante sia un modello più grande (8B) e dotato di capacità di ragionamento (*Chain of Thought*), ha performato male (Accuracy 30%).
-* **Il problema dell'Over-Thinking:** Il modello tende a "sovra-analizzare" i messaggi. Il processo di ragionamento lo porta a vedere potenziali inganni anche in messaggi innocui, generando un numero elevatissimo di **Falsi Positivi (743)**.
-* **Latenza Inaccettabile:** Richiede in media **7.41 secondi** per messaggio, rendendolo 32 volte più lento del modello specializzato.
-* **Conclusione:** I modelli *Reasoning* non sono adatti a task di classificazione rapida/binaria senza un prompt engineering estremo.
+* **Over-Thinking:** Il modello tende a "sovra-analizzare" i messaggi, il ragionamento lo porta a vedere potenziali inganni anche in messaggi innocui, generando un numero elevatissimo di **Falsi Positivi**.
+* **Latenza Elevatissima:** Richiede in media **7.41 secondi** per messaggio, rendendolo circa 32 volte più lento del modello specializzato.
 
-#### ❌ 3. Llama-3.2-3B Instruct (Base) - La Baseline
+#### ❌ 3. Llama-3.2-3B Instruct (Base)
 Il modello base (senza fine-tuning) mostra perché l'addestramento era necessario.
-* **Mode Collapse (Paranoia):** Il modello ha classificato quasi l'intero dataset come SPAM.
-* **Il falso mito della Recall 100%:** Sebbene abbia intercettato tutti gli spam (Recall 1.00), lo ha fatto bloccando anche **900 messaggi legittimi su 958**. Questo rende il modello inutilizzabile in uno scenario reale, poiché l'utente non riceverebbe quasi più messaggi.
+* **Mode Collapse:** Il modello ha classificato quasi l'intero dataset come SPAM.
+* **Inganno Recall 100%:** Anche se ha intercettato tutti gli spam (Recall 1.00), lo ha fatto bloccando anche **900 messaggi legittimi su 958**. Questo rende il modello inutilizzabile in uno scenario reale perché l'utente non riceverebbe quasi più messaggi.
 
 ---
 
-### 9.3 Allegato Tecnico: Report Dettagliati
-Per trasparenza scientifica, riportiamo i raw data generati dallo script di benchmark (`benchmark_runner.py`).
+### 9.3 Report Dettagliati
 
-**A. Modello Fine-Tuned (Specialist)**
-Si nota la diagonale principale della matrice molto popolata (risposte corrette).
+**A. Modello Fine-Tuned**
+Diagonale principale della matrice molto popolata, indice di molte risposte corrette.
     
     Matrice di Confusione:
-    [[154 (TP)    3 (FN)]   <-- Ottima intercettazione Spam
-     [ 74 (FP)  884 (TN)]]  <-- Buona distinzione Ham
+    [[154 (TP)    3 (FN)]   
+     [ 74 (FP)  884 (TN)]]  
 
                   precision    recall  f1-score   support
             spam       0.68      0.98      0.80       157
              ham       1.00      0.92      0.96       958
         accuracy                           0.93      1115
 
-**B. Modello DeepSeek R1 (Reasoning)**
-Alto numero di Falsi Positivi (743) che distrugge l'Accuracy.
+**B. Modello Reasoning**
+Alto numero di Falsi Positivi che distrugge l'Accuracy.
 
     Matrice di Confusione:
     [[ 120 (TP)   37 (FN)]
-     [ 743 (FP)  215 (TN)]] <-- Troppi messaggi buoni bloccati
+     [ 743 (FP)  215 (TN)]] 
 
                   precision    recall  f1-score   support
             spam       0.14      0.76      0.24       157
              ham       0.85      0.22      0.35       958
         accuracy                           0.30      1115
 
-**C. Modello Base (Zero-Shot)**
+**C. Modello Base**
 Il modello ha predetto quasi solo "SPAM", ignorando la classe "HAM".
 
     Matrice di Confusione:
     [[157 (TP)    0 (FN)]
-     [900 (FP)   58 (TN)]] <-- Disastroso sui messaggi legittimi
+     [900 (FP)   58 (TN)]]
 
                   precision    recall  f1-score   support
             spam       0.15      1.00      0.26       157
@@ -448,18 +442,15 @@ Il modello ha predetto quasi solo "SPAM", ignorando la classe "HAM".
 
 ## 10. 🖥️ Hardware e Limitazioni <a name="hardware"></a>
 
-> [!NOTE]
-> 🧪 Tutto il processo di training e valutazione è stato condotto con risorse accessibili per dimostrare la scalabilità della soluzione.
-
 | Fase | Hardware Utilizzato | Note Tecniche |
 | :--- | :--- | :--- |
-| **Training** (Cloud) | **NVIDIA Tesla T4** (16GB VRAM) | Ambiente **Google Colab Free Tier**. Grazie alla quantizzazione 4-bit, il picco di memoria è rimasto sotto i 6GB. |
-| **Inference** (Locale) | **Laptop Consumer** (CPU/GPU Integrata) | Modello eseguito via **LM Studio**. La latenza media di ~0.2s dimostra che non serve hardware enterprise per l'inferenza. |
+| **Training** (Cloud) | **NVIDIA Tesla T4** (16GB VRAM) | Ambiente **Google Colab Free Tier** |
+| **Inference** (Locale) | **Laptop** (CPU/GPU Integrata) | Sviluppato espressamente per non richiedere hardware prestante per l'utilizzo. |
 
 > [!WARNING]
 > **Limitazioni del Modello:**
-> - Il modello Fine-Tuned è specializzato verticalmente sullo SPAM. Se interrogato su argomenti generali (es. "Qual è la capitale della Francia?"), potrebbe cercare di classificare anche quella domanda come HAM/SPAM o rispondere in modo breve. È un *Specialist*, non un *Generalist*.
-> - Il dataset contiene principalmente SMS in lingua inglese. Le performance su SMS in italiano non sono garantite senza un ulteriore fine-tuning multilingua.
+> - Il modello Fine-Tuned è specializzato verticalmente sullo SPAM. Se interrogato su argomenti generali, potrebbe cercare di classificare anche quella domanda come HAM/SPAM o rispondere in modo breve. È un modello *Specialist*, non un *Generalist*.
+> - Il dataset contiene SMS in lingua inglese. Le performance su SMS in italiano non sono garantite senza un ulteriore fine-tuning multilingua.
 
 ---
 
