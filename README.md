@@ -23,8 +23,8 @@
 > 05. [📁 Struttura del Progetto](#struttura-progetto)  
 > 06. [🛠️ Stack Tecnologico](#stack-tecnologico)  
 > 07. [🚀 Installazione](#installazione)  
-> 08. [🧪 Run: Processo di Fine-Tuning](#fine-tuning)  
-> 09. [📊 Run: Benchmark e Confronto](#benchmark)  
+> 08. [🧪 Processo di Fine-Tuning](#fine-tuning)  
+> 09. [📊 Benchmark e Confronto](#benchmark)  
 > 10. [📈 Metriche e Risultati](#metriche)  
 > 11. [🖥️ Hardware e Limitazioni](#hardware)  
 > 12. [📝 Licenze](#licenze)
@@ -41,32 +41,32 @@
 
 ## 2. 📌 Descrizione Progetto <a name="descrizione"></a>
 
-Questo progetto nasce come studio sperimentale per analizzare i trade-off tra **dimensione del modello**, **capacità di ragionamento** (Reasoning) e **specializzazione del dominio** nel contesto della Spam Detection.
+Questo progetto nasce come studio sperimentale per analizzare i trade-off tra **dimensione del modello**, **capacità di ragionamento** e **specializzazione del dominio** nel contesto della Spam Detection.
 
-I Large Language Models (LLM) classici sono strumenti molto potenti ma, spesso, peccano di velocità e stretta aderenza alle richieste dei task che vengono affidati, come ad esempio filtrare SMS malevoli.
+I Large Language Models (LLM) classici sono strumenti molto potenti ma, spesso, peccano di velocità e stretta aderenza alle richieste dei task che vengono affidati, come ad esempio nel nostro caso filtrare SMS malevoli.
 
 Utilizzando il dataset pubblico **SMS Spam Collection**, il progetto mette a confronto tre filosofie diverse:
 
-1.  **Zero-Shot Generalist:** `Llama 3.2 3B Instruct`. Un modello leggero e generico, testato sulla sua capacità di riconoscere lo spam senza addestramento specifico.
-2.  **Chain-of-Thought Reasoning:** `DeepSeek R1`. Un modello progettato per "pensare" prima di rispondere. Testiamo se il ragionamento logico aiuta a scovare tentativi di phishing più sottili o se aggiunge solo latenza inutile.
-3.  **Domain Specialist:** `Llama 3.2 3B Fine-Tuned`. La versione custom, addestrata specificamente.
+1.  **Zero-Shot Generalist:** `Llama 3.2 Instruct`. Un modello leggero e generico, testato sulla sua capacità di riconoscere lo spam senza addestramento specifico
+2.  **Reasoning Model:** `DeepSeek-R1-Distill`. Un modello progettato per "pensare" prima di rispondere. Testiamo se il ragionamento logico aiuta a scovare tentativi di phishing più sottili o se aggiunge solo latenza inutile
+3.  **Domain Specialist:** `Llama 3.2 Fine-Tuned`. La versione custom, addestrata specificamente per questo task
 
 ### 🎯 Obiettivo
-Dimostrare che un **modello piccolo ma specializzato (Fine-Tuned)** può superare modelli più complessi o "ragionanti" in task verticali, offrendo:
+Dimostrare che un **modello piccolo ma specializzato** può superare modelli più complessi o "ragionanti" in task verticali, offrendo:
 * ✅ **Latenza Minore**
 * ✅ **Accuratezza Superiore**
 
 ## 3. 📂 Descrizione Dataset <a name="dataset"></a>
 
 Il progetto utilizza l'**SMS Spam Collection**, un dataset pubblico disponibile presso l'UCI Machine Learning Repository.
-Si tratta di un set di **messaggi SMS** reali, etichettati manualmente come legittimi o indesiderati.
+Si tratta di un set di **messaggi SMS** reali, etichettati come legittimi o indesiderati.
 
 | Etichetta | Percentuale | Descrizione |
 | :--- | :--- | :--- |
 | **HAM** 🟢 | **76.6%** | Messaggi normali, conversazioni personali, notifiche legittime. |
 | **SPAM** 🔴 | **23.4%** | Phishing, truffe, pubblicità aggressiva, vincite false. |
 
-> **Nota Tecnica:** Durante la fase di preparazione (`split_dataset.py`), sono state rinominate le colonne originali (`v1`, `v2`) in `label` e `text` per chiarezza e rimosso eventuali colonne vuote sporche presenti nel CSV originale.
+> **Nota Tecnica:** Durante la fase di preparazione (`split_dataset.py`), vengono rinominate le colonne originali (`v1`, `v2`) in `label` e `text` per chiarezza e rimosso eventuali colonne vuote sporche presenti nel CSV originale.
 
 ### 📝 Esempi dal Dataset
 
@@ -85,10 +85,10 @@ Ecco come appaiono i dati grezzi che il modello deve imparare a distinguere:
 
 | File | Tipo | Descrizione |
 | :--- | :--- | :--- |
-| `split_dataset.py` | 🐍 Script | Lo script che si occupa di pulire il dataset raw (`spam.csv`), mescolarlo e dividerlo rigorosamente in Training Set (80%) e Test Set (20%) per evitare *Overfitting*. |
-| `model_evaluation.py` | 🐍 Script | Lo script che interroga LM Studio, misura la latenza e calcola le metriche (Accuracy, Precision, Recall) sui modelli. |
+| `split_dataset.py` | 🐍 Script | Lo script si occupa di pulire il dataset raw (`spam.csv`), mescolarlo e dividerlo rigorosamente in Training Set (80%) e Test Set (20%) per evitare *Overfitting*. |
+| `model_evaluation.py` | 🐍 Script | Lo script che interroga LM Studio, misura la latenza e calcola le metriche sui modelli. |
 | `train_unsloth.jsonl` | 📄 Dati | Il file JSONL formattato contenente solo gli esempi per l'addestramento da utilizzare su Colab. |
-| `test_benchmark.csv` | 📄 Dati | Il dataset "invisibile" usato solo per la valutazione finale. |
+| `test_benchmark.csv` | 📄 Dati | La parte restante del dataset usato solo per la valutazione finale. |
 | `Finetuning_Spam.ipynb` | 📓 Notebook | Il notebook Colab che esegue l'addestramento QLoRA e l'esportazione GGUF. |
 
 
@@ -120,22 +120,21 @@ Ecco come appaiono i dati grezzi che il modello deve imparare a distinguere:
 ### 🟣 LM Studio
 **LM Studio** non viene usato come semplice interfaccia grafica, ma come vero e proprio **Server Locale**.
 * **Ruolo Architetturale:** LM Studio carica i modelli e sfrutta la GPU/CPU del pc per eseguire i calcoli.
-* **Integrazione API:** La funzionalità chiave utile per il progetto è il suo **Local Server** compatibile con le specifiche OpenAI (`http://localhost:1234/v1`). Questo ci permette di disaccoppiare il modello dallo script Python: possiamo sostituire il "motore" (es. passando da un modello ad un altro) in tempo reale senza modificare il codice.
+* **Integrazione API:** La funzionalità chiave utile per il progetto è il suo **Local Server** compatibile con le specifiche OpenAI (`http://localhost:1234/v1`). Questo ci permette di disaccoppiare il modello dallo script Python: possiamo sostituire il "motore" ( passando da un modello ad un altro) in tempo reale senza modificare il codice.
 
 ### 🦜🔗 LangChain
 **LangChain** funge come livello di astrazione logica tra il nostro codice Python e il modello linguistico.
-* **Prompt Templating:** Gestisce la costruzione dinamica dei messaggi, inserendo il `System Prompt` (le regole di sicurezza) e lo `User Prompt` (l'SMS da analizzare) nel formato corretto atteso dal modello.
+* **Prompt Templating:** Gestisce la costruzione dinamica dei messaggi, inserendo il `System Prompt` (le regole) e lo `User Prompt` (l'SMS da analizzare) nel formato corretto atteso dal modello.
 * **Output Parsing:** Utilizzando `StrOutputParser`, LangChain intercetta la risposta grezza dell'LLM e la pulisce da eventuali meta-tag o spazi bianchi, garantendo che il dato salvato nel CSV sia pulito e pronto per l'analisi.
 
-### 🦥 Unsloth AI (Optimization Library)
+### 🦥 Unsloth AI
 Per la fase di Fine-Tuning su Google Colab, viene utilizzata la libreria **Unsloth**, che rappresenta uno strumento fondamentale per migliorare l'efficienza nell'addestramento degli LLM.
 * **Perché è essenziale:** Il Fine-Tuning tradizionale di Llama 3 richiederebbe GPU potentissime (A100, 40GB VRAM).
 * **Innovazione Tecnica:** Unsloth implementa kernel PyTorch riscritti per l'ottimizzazione e utilizza la tecnica **QLoRA** (Quantized Low-Rank Adaptation).
 * **Risultato:** Questo stack ci ha permesso di addestrare un modello da 3 miliardi di parametri su una GPU Tesla T4 gratuita (16GB VRAM), riducendo i tempi di training di 2x e l'occupazione di memoria del 60%.
 
 ## 7. 🚀 Installazione <a name="installazione"></a>
-
-Questa sezione guida passo dopo passo alla configurazione dell'ambiente di esecuzione locale.  
+ 
 La procedura è divisa in due parti: configurazione del **Codice Python** e configurazione di **LM Studio**.
 
 ---
@@ -144,7 +143,7 @@ La procedura è divisa in due parti: configurazione del **Codice Python** e conf
 
 #### 1. Prerequisiti
 Assicurati di avere installato **Python 3.10** (o superiore) e **Git**.  
-Puoi verificarlo aprendo il terminale (o Prompt dei Comandi) e digitando:
+Puoi verificarlo aprendo il terminale e digitando:
 
     python --version
 
@@ -153,13 +152,12 @@ Puoi verificarlo aprendo il terminale (o Prompt dei Comandi) e digitando:
 #### 2. Clona il Repository
 Scarica il progetto sul tuo computer:
 
-    git clone https://github.com/TUO-USERNAME/DLA2-Spam-Detection.git
+    git clone https://github.com/alebullegas/DLA2_SmsSpamDetection
     cd DLA2-Spam-Detection
 
 ---
 
 #### 3. Crea l'Ambiente Virtuale
-È fondamentale isolare le librerie del progetto per non creare conflitti col sistema.
 
 **Su Windows:**
 
@@ -170,8 +168,6 @@ Scarica il progetto sul tuo computer:
 
     python3 -m venv venv
     source venv/bin/activate
-
-Se l'attivazione ha successo, vedrai comparire `(venv)` all'inizio della riga del terminale.
 
 ---
 
@@ -184,7 +180,7 @@ Esegui il comando per installarle tutte le dipendenze:
 
 ### Parte B: Configurazione LM Studio
 
-Per far funzionare gli script, **LM Studio** deve agire come un server API locale.
+Per far funzionare gli script, **LM Studio** deve agire come un server locale.
 
 #### 1. Scarica e Installa
 Scarica LM Studio da **https://lmstudio.ai** e installalo.
@@ -197,7 +193,7 @@ Scarica LM Studio da **https://lmstudio.ai** e installalo.
 - Cerca il modello che vuoi testare
 - Scarica la versione quantizzata **Q4_K_M** (consigliata)
 
-**Nota:** Per usare il modello Fine-Tuned del progetto (file `.gguf`), trascinalo semplicemente nella cartella dove vengono installati gli altri modelli di LM Studio.
+**Nota:** Per usare il modello Fine-Tuned del progetto (file `.gguf`), trascinalo semplicemente nella cartella dove vengono installati gli altri modelli di LM Studio
 
 ---
 
@@ -216,9 +212,9 @@ Ora il tuo computer è pronto ad eseguire gli script e risponde all'indirizzo:
 
 **Nota:** Esegui prima lo script `split_dataset.py` per organizzare i dati e solo dopo lo script `model_evaluation.py` per testare il modello.
 
-## 8. 🧪 Run: Processo di Fine-Tuning <a name="fine-tuning"></a>
+## 8. 🧪 Processo di Fine-Tuning <a name="fine-tuning"></a>
 
-Il processo di addestramento è stato eseguito su **Google Colab** sfruttando una GPU **NVIDIA Tesla T4 (16GB VRAM)**.
+Il processo di addestramento viene eseguito su **Google Colab** sfruttando una GPU **NVIDIA Tesla T4 (16GB VRAM)**.
 Dato che il Fine-Tuning completo di un modello da 3 Miliardi di parametri richiederebbe risorse hardware proibitive, è stata adottata la tecnica **QLoRA** (Quantized Low-Rank Adaptation) tramite la libreria **Unsloth**.
 
 ### 📋 Workflow di Addestramento
@@ -244,10 +240,10 @@ Il notebook carica il file `train_unsloth.jsonl` (generato nel `split_dataset.py
 ---
 
 #### 3. Configurazione Iperparametri
-Sono stati impostati i seguenti parametri per massimizzare la stabilità su dataset di piccole dimensioni:
+Sono stati impostati i seguenti parametri per massimizzare la stabilità su questo tipo di dataset:
 
 - **Learning Rate:** `2e-4` (standard per QLoRA)
-- **Max Steps:** `60` (sufficienti senza rischio di overfitting)
+- **Max Steps:** `60` 
 - **Batch Size:** `2` 
 - **Data Collator:** `train_on_responses_only`  
   Il modello impara a generare solo la risposta, ignorando il prompt utente nel calcolo della loss.
@@ -259,37 +255,33 @@ Al termine del training, gli adattatori **LoRA** sono stati fusi con il modello 
 Il risultato finale è stato convertito nel formato **GGUF** con quantizzazione **Q4_K_M (4-bit Medium)**.
 
 **Perché proprio Q4_K_M?**  
-Rappresenta il *sweet spot* ideale: riduce il peso del modello da ~6GB a ~2GB con una perdita di precisione tranquillamente trascurabile, rendendolo eseguibile su qualsiasi laptop non molto potente.
+Rappresenta il compromesso ideale: riduce il peso del modello a ~2GB con una perdita di precisione tranquillamente trascurabile, rendendolo eseguibile su qualsiasi laptop o computer non molto potente.
 
-## 9. 📊 Run: Benchmark e Confronto <a name="benchmark"></a>
+## 9. 📊 Benchmark e Confronto <a name="benchmark"></a>
 
-Per valutare oggettivamente le performance, non bastava "chattare" manualmente con i modelli quindi è stata creata una **pipeline di valutazione automatizzata** (`src/model_evaluation.py`) che garantisce che ogni modello venga testato esattamente nelle stesse condizioni.
+Per valutare oggettivamente le performance, non bastava "chattare" manualmente con i modelli quindi è stato creato uno **script di valutazione automatizzato** (`src/model_evaluation.py`) che garantisce che ogni modello venga testato esattamente nelle stesse condizioni.
 
 ---
 
 ### ⚙️ Metodologia di Test
 
 1. **Stesso Dataset:**  
-   Tutti i modelli vengono valutati sul file `test_benchmark.csv` (il 20% dei dati mai visti durante il training).
+   Tutti i modelli vengono valutati sul file `test_benchmark.csv` (il 20% dei dati, mai visti durante il training).
 
 2. **Stesso Prompt:**  
    Utilizziamo lo stesso identico *System Prompt* per tutti i modelli, per valutare chi obbedisce meglio alle istruzioni.
 
-3. **Temperatura 0:**  
-   Impostiamo `temperature=0.0` nel client API per azzerare la casualità.
-
 ---
 
-### 🐍 Analisi del Codice (`benchmark_runner.py`)
+### 🐍 Analisi del Codice (`model_evaluation.py`)
 
-Lo script Python funge da **orchestratore** dell’intero processo di valutazione.  
-Di seguito i componenti chiave del codice.
+Lo script orchestra l’intero processo di valutazione.
 
 ---
 
 #### 1. Connessione al Server Locale
 
-Invece di usare librerie pesanti o modelli caricati direttamente nello script, ci connettiamo a **LM Studio** come se fosse una API remota:
+Connessione a **LM Studio** come se fosse una API remota:
 
     llm = ChatOpenAI(
         base_url="http://localhost:1234/v1",  # Server locale di LM Studio
