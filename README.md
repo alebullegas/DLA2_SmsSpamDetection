@@ -48,7 +48,7 @@ I Large Language Models (LLM) classici sono strumenti molto potenti ma, spesso, 
 Utilizzando il dataset pubblico **SMS Spam Collection**, il progetto mette a confronto tre filosofie diverse:
 
 1.  **Zero-Shot Generalist:** `Llama 3.2 Instruct`. Un modello leggero e generico, testato sulla sua capacità di riconoscere lo spam senza addestramento specifico
-2.  **Reasoning Model:** `DeepSeek-R1-Distill`. Un modello progettato per "pensare" prima di rispondere. Testiamo se il ragionamento logico aiuta a scovare tentativi di phishing più sottili o se aggiunge solo latenza inutile
+2.  **Reasoning Model:** `DeepSeek-R1-Distill Llama`. Un modello progettato per "pensare" prima di rispondere. Testiamo se il ragionamento logico aiuta a scovare tentativi di phishing più sottili o se aggiunge solo latenza inutile
 3.  **Domain Specialist:** `Llama 3.2 Fine-Tuned`. La versione custom, addestrata specificamente per questo task
 
 ### 🎯 Obiettivo
@@ -369,7 +369,7 @@ Sono state confrontate tre architetture distinte per valutare l'impatto del Fine
 | Modello | Ruolo | Accuracy | Precision (Spam) | Recall (Spam) | Latenza (avg) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Llama-3.2-3B Fine-Tuned** | **Specialist** | **93.09%** | **0.68** | **0.98** | **0.23s** |
-| **DeepSeek-R1-Distill (8B)** | Reasoning | 30.04% | 0.14 | 0.76 | 7.41s |
+| **DeepSeek-R1-Distill Llama (8B)** | Reasoning | 30.04% | 0.14 | 0.76 | 7.41s |
 | **Llama-3.2-3B Base** | Base Model | 19.28% | 0.15 | 1.00 | 0.26s |
 
 > **Nota Metodologica:**
