@@ -294,7 +294,7 @@ Questo approccio permette di **cambiare modello** direttamente da LM Studio senz
 
 #### 2. LangChain Expression Language
 
-Utilizziamo la sintassi **LCEL** (pipe syntax `|`) per definire il flusso di elaborazione in modo chiaro e leggibile:
+Utilizziamo la sintassi **LCEL** per definire il flusso di elaborazione in modo chiaro e leggibile:
 
     # Definizione della struttura: Prompt -> Modello -> Parser
     chain = prompt | llm | StrOutputParser()
