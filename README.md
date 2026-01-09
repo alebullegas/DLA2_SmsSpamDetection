@@ -122,7 +122,7 @@ Ecco come appaiono i dati grezzi che il modello deve imparare a distinguere:
 ### 🔗 LangChain
 **LangChain** funge come livello di astrazione logica tra il nostro codice Python e il modello linguistico.
 * **Prompt Templating:** Gestisce la costruzione dinamica dei messaggi, inserendo il `System Prompt` (le regole) e lo `User Prompt` (l'SMS da analizzare) nel formato corretto atteso dal modello.
-* **Output Parsing:** Utilizzando `StrOutputParser`, LangChain intercetta la risposta grezza dell'LLM e la pulisce da eventuali meta-tag o spazi bianchi, garantendo che il dato salvato nel CSV sia pulito e pronto per l'analisi.
+* **Output Parsing:** Utilizzando `StrOutputParser`, LangChain intercetta la risposta grezza dell'LLM e la pulisce da eventuali meta-tag o spazi bianchi, garantendo che il dato salvato nel CSV sia pulito.
 
 ### 🦥 Unsloth AI
 Per la fase di Fine-Tuning su Google Colab, viene utilizzata la libreria **Unsloth**, che rappresenta uno strumento fondamentale per migliorare l'efficienza nell'addestramento degli LLM.
