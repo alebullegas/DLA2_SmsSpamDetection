@@ -374,8 +374,8 @@ Sono state confrontate tre architetture distinte per valutare l'impatto del Fine
 
 > **Nota Metodologica:**
 > * **Accuracy:** Percentuale di risposte corrette sul totale.
-> * **Recall (Spam):** Capacità di intercettare le minacce reali (evitare falsi negativi).
-> * **Latenza:** Tempo medio di risposta per singolo messaggio (Hardware: Consumer GPU).
+> * **Recall (Spam):** Capacità di intercettare le minacce reali quindi evitare falsi negativi.
+> * **Latenza:** Tempo medio di risposta per singolo messaggio.
 
 ---
 
