@@ -49,7 +49,7 @@ Utilizzando il dataset pubblico **SMS Spam Collection**, il progetto mette a con
 
 1.  **Zero-Shot Generalist:** `Llama 3.2 Instruct`. Un modello leggero e generico, testato sulla sua capacità di riconoscere lo spam senza addestramento specifico
 2.  **Reasoning Model:** `DeepSeek-R1-Distill Llama`. Un modello progettato per "pensare" prima di rispondere. Testiamo se il ragionamento logico aiuta a scovare tentativi di phishing più sottili o se aggiunge solo latenza inutile
-3.  **Domain Specialist:** `Llama 3.2 Fine-Tuned`. La versione custom, addestrata specificamente per questo task
+3.  **Domain Specialist:** `Llama 3.2 Fine-Tuned`. La versione custom "fine-tunata", addestrata specificamente per questo task
 
 ### 🎯 Obiettivo
 Dimostrare che un **modello piccolo ma specializzato** può superare modelli più complessi o "ragionanti" in task verticali, offrendo:
