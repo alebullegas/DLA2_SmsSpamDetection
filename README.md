@@ -330,10 +330,10 @@ Poiché l’automazione richiede risposte precise, il codice verifica che l’ou
         predicted = "ham"
     else:
         # Se il modello divaga o non risponde correttamente,
-        # viene segnato come errore o gestito con logica di fallback.
+        # viene segnato come errore o gestito con logica di fallback
         predicted = "error"
 
-Questo garantisce una valutazione **robusta e imparziale**, penalizzando risposte ambigue o fuori specifica.
+Questo garantisce una valutazione **robusta e imparziale**, penalizzando risposte ambigue
 
 ---
 
