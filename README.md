@@ -381,8 +381,6 @@ Sono state confrontate tre architetture distinte per valutare l'impatto del Fine
 
 ### 9.2 Analisi Critica dei Risultati
 
-Di seguito analizziamo il comportamento di ogni modello, spiegando le cause tecniche delle performance.
-
 #### 🏆 1. Llama-3.2-3B Instruct (Fine-Tuned) - Vincitore
 Il modello addestrato con tecnica **QLoRA** ha ottenuto i risultati migliori, dimostrando sicurezza e usabilità.
 * **Sicurezza Massima (Recall 98%):** Si é dimostrato un filtro estremamente robusto, infatti in questo specifico caso, su 157 messaggi di spam reali nel test set il modello ne ha bloccati correttamente **154**, lasciandone passare solo 3.
