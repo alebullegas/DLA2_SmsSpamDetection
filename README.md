@@ -85,11 +85,11 @@ Ecco come appaiono i dati grezzi che il modello deve imparare a distinguere:
 
 | File | Tipo | Descrizione |
 | :--- | :--- | :--- |
-| `split_dataset.py` | 🐍 Script | Lo script si occupa di pulire il dataset (`spam.csv`), mescolarlo e dividerlo rigorosamente in Training Set (80%) e Test Set (20%) per evitare *Overfitting*. |
-| `model_evaluation.py` | 🐍 Script | Lo script che interroga LM Studio, misura la latenza e calcola le metriche sui modelli. |
-| `train_unsloth.jsonl` | 📄 Dati | Il file JSONL formattato contenente solo gli esempi per l'addestramento da utilizzare su Colab. |
-| `test_benchmark.csv` | 📄 Dati | La parte restante del dataset usato solo per la valutazione finale. |
-| `Finetuning_Spam.ipynb` | 📓 Notebook | Il notebook Colab che esegue l'addestramento QLoRA e l'esportazione GGUF. |
+| `split_dataset.py` | 🐍 Script | Lo script si occupa di pulire il dataset (`spam.csv`), mescolarlo e dividerlo rigorosamente in Training Set (80%) e Test Set (20%)|
+| `model_evaluation.py` | 🐍 Script | Lo script che interroga LM Studio, misura la latenza e calcola le metriche sui modelli|
+| `train_unsloth.jsonl` | 📄 Dati | Il file JSONL formattato contenente solo gli esempi per l'addestramento da utilizzare su Colab|
+| `test_benchmark.csv` | 📄 Dati | La parte restante del dataset usato solo per la valutazione finale|
+| `Finetuning_Spam.ipynb` | 📓 Notebook | Il notebook Colab che esegue l'addestramento QLoRA e l'esportazione GGUF|
 
 
 ## 5. 📁 Struttura del Progetto <a name="struttura-progetto"></a>
