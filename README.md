@@ -288,7 +288,7 @@ Connessione a **LM Studio** come se fosse una API remota:
         temperature=0.0                       
     )
 
-Questo approccio permette di **cambiare modello direttamente da LM Studio senza modificare una sola riga di codice.
+Questo approccio permette di **cambiare modello** direttamente da LM Studio senza modificare una sola riga di codice.
 
 ---
 
