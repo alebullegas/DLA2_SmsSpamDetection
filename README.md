@@ -63,7 +63,7 @@ Si tratta di un set di **messaggi SMS** reali, etichettati come legittimi o inde
 
 | Etichetta | Percentuale | Descrizione |
 | :--- | :--- | :--- |
-| **HAM** 🟢 | **76.6%** | Messaggi normali, conversazioni personali, notifiche legittime. |
+| **HAM** 🟢 | **76.6%** | Messaggi normali, conversazioni personali |
 | **SPAM** 🔴 | **23.4%** | Phishing, truffe, pubblicità aggressiva, vincite false. |
 
 > **Nota Tecnica:** Durante la fase di preparazione (`split_dataset.py`), vengono rinominate le colonne originali (`v1`, `v2`) in `label` e `text` per chiarezza e rimosso eventuali colonne vuote sporche presenti nel CSV originale.
