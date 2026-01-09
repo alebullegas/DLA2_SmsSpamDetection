@@ -258,7 +258,7 @@ Rappresenta il compromesso ideale: riduce il peso del modello a ~2GB con una per
 
 ## 9. 📊 Benchmark e Confronto <a name="benchmark"></a>
 
-Per valutare oggettivamente le performance, non bastava "chattare" manualmente con i modelli quindi è stato creato uno **script di valutazione automatizzato** (`src/model_evaluation.py`) che garantisce che ogni modello venga testato esattamente nelle stesse condizioni.
+Per valutare oggettivamente le performance, non bastava "parlare" manualmente con i modelli quindi è stato creato uno **script di valutazione automatizzato** (`src/model_evaluation.py`) che garantisce che ogni modello venga testato esattamente nelle stesse condizioni.
 
 ---
 
