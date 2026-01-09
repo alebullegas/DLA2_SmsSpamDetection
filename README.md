@@ -388,7 +388,7 @@ Il modello addestrato con tecnica **QLoRA** ha ottenuto i risultati migliori, di
 * **Efficienza:** Con **0.23 secondi** di risposta, è stato il modello piú veloce.
 
 #### ⚠️ 2. DeepSeek-R1-Distill-Llama
-Nonostante sia un modello più grande (8B) e dotato di capacità di ragionamento (*Chain of Thought*), ha performato male (Accuracy 30%).
+Nonostante sia un modello più grande e dotato di capacità di ragionamento (*Chain of Thought*), ha performato male.
 * **Over-Thinking:** Il modello tende a "sovra-analizzare" i messaggi, il ragionamento lo porta a vedere potenziali inganni anche in messaggi innocui, generando un numero elevatissimo di **Falsi Positivi**.
 * **Latenza Elevatissima:** Richiede in media **7.41 secondi** per messaggio, rendendolo circa 32 volte più lento del modello specializzato.
 
